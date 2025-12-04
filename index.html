@@ -52,6 +52,17 @@
             font-size: 16px;
         }
 
+        .option-group label {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-group label .emoji {
+            font-size: 22px;
+        }
+
         input[type="text"],
         input[type="number"] {
             width: 100%;
@@ -161,24 +172,24 @@
 </head>
 <body>
     <div class="container">
-        <h1>ELEGÍ CANTIDAD DE LA OPCIÓN U OPCIONES QUE QUIERAS PEDIR.<br>EL VALOR ES DE 13K C/U.<br></h1>
+        <h1>ELEGÍ CANTIDAD DE LA OPCIÓN U OPCIONES QUE QUIERAS PEDIR.<br>EL VALOR ES DE 13K CADA UNA.<br>SERÁN ENTREGADAS EN EL EVENTO.</h1>
         
         <form id="pedidoForm">
             <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" required placeholder="prueba">
+            <input type="text" id="nombre" required placeholder="Tu nombre">
 
             <div class="option-group">
-                <label for="miami">MIAMI</label>
+                <label for="miami"><span class="emoji">🌴</span></label>
                 <input type="number" id="miami" min="0" value="0">
             </div>
 
             <div class="option-group">
-                <label for="dj">DJ</label>
+                <label for="dj"><span class="emoji">🎧</span></label>
                 <input type="number" id="dj" min="0" value="0">
             </div>
 
             <div class="option-group">
-                <label for="pegasus">PEGASUS</label>
+                <label for="pegasus"><span class="emoji">🦄</span></label>
                 <input type="number" id="pegasus" min="0" value="0">
             </div>
 
