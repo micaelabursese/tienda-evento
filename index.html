@@ -1,133 +1,305 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pedidos Evento</title>
-<style>
-  body{font-family:Inter,Arial,Helvetica,sans-serif;background:#f5f5f5;padding:20px}
-  .container{max-width:480px;margin:20px auto;background:#fff;padding:24px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.08)}
-  h1{font-size:18px;text-align:center;margin:0 0 14px}
-  label{display:block;margin-top:12px;font-weight:600}
-  input[type="text"],input[type="number"],input[type="file"]{width:100%;padding:10px;border-radius:8px;border:1px solid #dcdcdc;margin-top:6px;box-sizing:border-box}
-  .row{display:flex;gap:10px;align-items:center}
-  .row label{flex:1}
-  .row input[type="number"]{width:120px}
-  .total-box{margin-top:18px;padding:12px;background:#fafafa;border-radius:8px;text-align:center;font-weight:700}
-  .alias{margin-top:12px}
-  button{width:100%;padding:12px;margin-top:18px;background:#111;color:#fff;border:none;border-radius:10px;font-size:16px;cursor:pointer}
-  .success{display:none;margin-top:14px;text-align:center;color:green;font-weight:700}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="number"] {
+            background: #f5f5f5;
+        }
+
+        .total {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .option-group {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ELEGI CANTIDAD DE LA OPCIÓN U OPCIONES QUE QUIERAS PEDIR.<br>EL VALOR ES DE 13K CADA UNA.<br>SERÁN ENTREGADAS EN EL EVENTO.</h1>
+    <div class="container">
+        <h1>ELEGÍ CANTIDAD DE LA OPCIÓN U OPCIONES QUE QUIERAS PEDIR.<br>EL VALOR ES DE 13K CADA UNA.<br>SERÁN ENTREGADAS EN EL EVENTO.</h1>
+        
+        <form id="pedidoForm">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" required placeholder="prueba">
 
-    <label>Nombre completo</label>
-    <input id="nombre" type="text" placeholder="Nombre y apellido" />
+            <div class="option-group">
+                <label for="miami">MIAMI</label>
+                <input type="number" id="miami" min="0" value="0">
+            </div>
 
-    <div class="row">
-      <label>MIAMI</label>
-      <input id="miami" type="number" min="0" value="0" />
+            <div class="option-group">
+                <label for="dj">DJ</label>
+                <input type="number" id="dj" min="0" value="0">
+            </div>
+
+            <div class="option-group">
+                <label for="pegasus">PEGASUS</label>
+                <input type="number" id="pegasus" min="0" value="0">
+            </div>
+
+            <div class="total" id="total">Total: 0 ARS</div>
+
+            <label>Alias donde transferir: <strong>lucas.medina.trap</strong></label>
+
+            <label for="comprobante">Cargar comprobante</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="comprobante" accept="image/*,.pdf" required>
+            </div>
+
+            <button type="submit" id="submitBtn">Enviar pedido</button>
+        </form>
+
+        <div class="message" id="message"></div>
     </div>
 
-    <div class="row">
-      <label>DJ</label>
-      <input id="dj" type="number" min="0" value="0" />
-    </div>
+    <script>
+        // IMPORTANTE: Reemplaza esta URL con la URL de tu Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEl0lxjc_A50iczV7ApVd5en_NCCRCqumKhxCRKsANgmSoGjc1QgvTijTamD6cFcM/exec';
 
-    <div class="row">
-      <label>PEGASUS</label>
-      <input id="pegasus" type="number" min="0" value="0" />
-    </div>
+        const miamiInput = document.getElementById('miami');
+        const djInput = document.getElementById('dj');
+        const pegasusInput = document.getElementById('pegasus');
+        const totalDiv = document.getElementById('total');
+        const form = document.getElementById('pedidoForm');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
 
-    <div class="total-box">Total: <span id="total">0</span> ARS</div>
+        const PRECIO_UNITARIO = 13000;
 
-    <div class="alias"><strong>Alias donde transferir:</strong> lucas.medina.trap</div>
+        function calcularTotal() {
+            const miami = parseInt(miamiInput.value) || 0;
+            const dj = parseInt(djInput.value) || 0;
+            const pegasus = parseInt(pegasusInput.value) || 0;
+            const total = (miami + dj + pegasus) * PRECIO_UNITARIO;
+            totalDiv.textContent = `Total: ${total.toLocaleString('es-AR')} ARS`;
+            return total;
+        }
 
-    <label style="margin-top:12px">Cargar comprobante</label>
-    <input id="comprobante" type="file" accept="image/*" />
+        miamiInput.addEventListener('input', calcularTotal);
+        djInput.addEventListener('input', calcularTotal);
+        pegasusInput.addEventListener('input', calcularTotal);
 
-    <button id="btnEnviar">Enviar pedido</button>
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
 
-    <div id="mensaje" class="success">¡GRACIAS! EL PEDIDO FUE CARGADO.</div>
-  </div>
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-<script>
-const precio = 13000;
-const endpoint = "https://script.google.com/macros/s/AKfycbwL6PXSrdvtIod6M-J3tM96Xp8xQCJKuUbGGNtDju0zUTt8jnvS_K3i9FKiE4GHBnh-/exec"; // <--- Pegá aquí la URL del Apps Script (doPost)
+            const total = calcularTotal();
+            if (total === 0) {
+                showMessage('Por favor, seleccioná al menos una opción', 'error');
+                return;
+            }
 
-function actualizarTotal(){
-  const miami = parseInt(document.getElementById('miami').value) || 0;
-  const dj = parseInt(document.getElementById('dj').value) || 0;
-  const peg = parseInt(document.getElementById('pegasus').value) || 0;
-  const total = (miami + dj + peg) * precio;
-  document.getElementById('total').innerText = total.toLocaleString('es-AR');
-}
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
 
-document.querySelectorAll("input[type='number']").forEach(i=>i.addEventListener('input', actualizarTotal));
-actualizarTotal();
+            try {
+                const fileInput = document.getElementById('comprobante');
+                let fileData = null;
 
-document.getElementById('btnEnviar').addEventListener('click', async function(){
-  const nombre = document.getElementById('nombre').value.trim();
-  if(!nombre){ alert('Ingresá nombre completo'); return; }
+                if (fileInput.files[0]) {
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    
+                    fileData = await new Promise((resolve, reject) => {
+                        reader.onload = (e) => {
+                            resolve({
+                                name: file.name,
+                                mimeType: file.type,
+                                data: e.target.result.split(',')[1]
+                            });
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                }
 
-  const miami = parseInt(document.getElementById('miami').value) || 0;
-  const dj = parseInt(document.getElementById('dj').value) || 0;
-  const pegasus = parseInt(document.getElementById('pegasus').value) || 0;
-  const total = (miami + dj + pegasus) * precio;
+                const data = {
+                    nombre: document.getElementById('nombre').value,
+                    miami: parseInt(miamiInput.value) || 0,
+                    dj: parseInt(djInput.value) || 0,
+                    pegasus: parseInt(pegasusInput.value) || 0,
+                    total: total,
+                    alias: 'lucas.medina.trap',
+                    file: fileData
+                };
 
-  const fileInput = document.getElementById('comprobante');
-  const file = fileInput.files[0];
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
 
-  let comprobanteBase64 = "";
-  let comprobanteName = "";
+                const result = await response.json();
 
-  if(file){
-    comprobanteName = file.name;
-    // leer base64
-    comprobanteBase64 = await new Promise((res, rej) => {
-      const fr = new FileReader();
-      fr.onload = () => {
-        const dataUrl = fr.result;
-        const base64 = dataUrl.split(',')[1];
-        res(base64);
-      };
-      fr.onerror = rej;
-      fr.readAsDataURL(file);
-    });
-  }
+                if (result.success) {
+                    showMessage('¡Pedido enviado correctamente! Gracias.', 'success');
+                    form.reset();
+                    calcularTotal();
+                } else {
+                    showMessage('Error: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Error al enviar el pedido. Por favor, intentá de nuevo.', 'error');
+                console.error(error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar pedido';
+            }
+        });
 
-  const payload = {
-    nombre,
-    miami,
-    dj,
-    pegasus,
-    total,
-    comprobanteBase64,
-    comprobanteName
-  };
-
-  // enviar al endpoint (Apps Script)
-  try{
-    await fetch(endpoint, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    document.getElementById('mensaje').style.display = 'block';
-    // reset
-    document.getElementById('nombre').value = '';
-    document.getElementById('miami').value = 0;
-    document.getElementById('dj').value = 0;
-    document.getElementById('pegasus').value = 0;
-    document.getElementById('comprobante').value = '';
-    actualizarTotal();
-  }catch(err){
-    alert('Error al enviar, revisá la consola. ' + err);
-    console.error(err);
-  }
-});
-</script>
+        calcularTotal();
+    </script>
 </body>
 </html>
